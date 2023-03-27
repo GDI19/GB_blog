@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap5.css')}}">
+    <title>
+        {% block title %}
+            Base Page
+        {% endblock %}
+    </title>
+
+  </head>
+  <body>
+    <div class="container">
+            {# nav bar #}
+      <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{ url_for('index') }}">Blog</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+              aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+
+            {% for (endpoint, label) in [('users_app.list', 'Users'), ('articles_app.list', 'Articles')] %}
+              <a href="{{ url_for(endpoint) }}" class="nav-link {% if request.endpoint == endpoint -%}active{%- endif %}">
+              {{ label }}
+              </a>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+        {% block content %}
+        <h1>Hello, Base!</h1>
+        
+        {% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='js/bootsrap5.js')}}"></script>
+  </body>
+</html>
