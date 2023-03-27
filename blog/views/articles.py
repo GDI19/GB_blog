@@ -22,12 +22,12 @@ articles = [
     ]
 
 @articles_app.route('/', endpoint='list')
-def list():
+def articles_list():
     return render_template('articles/list.html', articles=articles)
 
 
 @articles_app.route('/<int:article_id>/', endpoint='details')
-def details(article_id):
+def article_details(article_id):
     try:
         choosen_article = articles[article_id]
         author_name = USERS[choosen_article['author']]
