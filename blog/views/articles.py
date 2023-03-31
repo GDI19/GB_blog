@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from .users import USERS
 from werkzeug.exceptions import NotFound
+from flask_login import login_required
 
 
 articles_app = Blueprint('articles_app', __name__)
@@ -27,6 +28,7 @@ def articles_list():
 
 
 @articles_app.route('/<int:article_id>/', endpoint='details')
+@login_required
 def article_details(article_id):
     try:
         choosen_article = articles[article_id]
