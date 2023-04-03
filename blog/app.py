@@ -1,16 +1,24 @@
+import os
 from flask import Flask, render_template
 from flask import request
 from .views.users import users_app
 from .views.articles import articles_app
 from .views.auth import auth_app, login_manager
 from .models.database import db
+from dotenv import load_dotenv
+from flask_migrate import Migrate
 
+
+load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/blog.db'
-app.config['SECRET_KEY'] = ''
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+migrate = Migrate(app, db, compare_type=True) # compare_type=True чтобы замечал разницу при изменении свойств колонок
+
+
+cfg_name = os.environ["CONFIG_NAME"] or "ProductionConfig"
+app.config.from_object(f"blog.configs.{cfg_name}")
+
 
 db.init_app(app)
 login_manager.init_app(app)
