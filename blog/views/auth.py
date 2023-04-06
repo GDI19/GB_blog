@@ -2,7 +2,7 @@ from flask import Blueprint, current_app, render_template, request, redirect, ur
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
 
-from blog.forms.user import RegistrationForm
+from blog.forms.user import RegistrationForm, LoginForm
 from blog.models import User
 from blog.models.database import db
 
@@ -23,10 +23,10 @@ def unauthorized():
     return redirect(url_for("auth_app.login"))
 
 
-@auth_app.route('/signup/', method=['GET', 'POST'], endpoint='signup')
+@auth_app.route('/signup/', methods=['GET', 'POST'], endpoint='signup')
 def signup():
     if current_user.is_authenticated:
-        return redirect('index')
+        return redirect(url_for('index'))
     
     error = None
     form = RegistrationForm(request.form)
@@ -55,14 +55,28 @@ def signup():
             current_app.logger.info("Created user %s", user)
             login_user(user)
             return redirect(url_for("index"))
+        
     return render_template("auth/register.html", form=form, error=error)
 
 
 
 @auth_app.route('/login/', methods=['GET', 'POST'], endpoint='login')
 def login():
-    login_user()
-    return redirect(url_for('index'))
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    error = None
+    form = LoginForm(request.form)
+    if request.method == "POST" and form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).one_or_none()
+        if user and user.validate_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            error = 'invalid username or password'
+
+        
+    return render_template('auth/login.html', form=form, error=error)
 
 
 @auth_app.route('/logout/', endpoint='logout')
