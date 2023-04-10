@@ -5,10 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{{ url_for('articles_app.list') }}">Back to Article List</a>
-    
-    <h1>{{ article.title }}</h1>
-    <p>{{ article.content}}</p>
-    <p>/{{ author }}/</p>
+    <div class="row">
+        <h1>{{ article.title }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">{{ article.text }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div><small class="text-muted">Author: {{ article.author.user.first_name }} {{ article.author.user.last_name }}</small></div>
+            <div><small class="text-muted">Created at: {{ article.dt_created.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
+            <div><small class="text-muted">Updated at: {{ article.dt_updated.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
+        </div>
+    </div>
 
 {% endblock %}
