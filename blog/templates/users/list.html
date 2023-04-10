@@ -9,16 +9,20 @@
     <h1>Users</h1>
     <div>
         <ul class="list-group">
-            {% for user in users %}
-            <li class="list-group-item">
-                <a href="{{ url_for('users_app.details', user_id=user.id ) }}">
-                    {{ user.username }}
-                </a>
-                {% if user.is_staff %}
-                    <span class="badge bg-secondary">staff</span>
-                {% endif %}
-            </li>
-            {% endfor%}
+            {% if users %}
+                {% for user in users %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('users_app.details', user_id=user.id ) }}">
+                        {{ user.username }}
+                    </a>
+                    {% if user.is_staff %}
+                        <span class="badge bg-secondary">staff</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            {% else %}
+                <h3>There are no users</h3>
+            {% endif %}
         </ul>
     </div>
 
