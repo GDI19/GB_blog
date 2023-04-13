@@ -18,6 +18,15 @@
             <div><small class="text-muted">Created at: {{ article.dt_created.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
             <div><small class="text-muted">Updated at: {{ article.dt_updated.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
         </div>
+        {% if article.tags %}
+        <div class="col-6">
+            {% for tag in article.tags %}
+                <a href="{{ url_for('articles_app.tag_articles', tag_id=tag.id) }}">
+                    <span class="badge bg-primary">{{ tag.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 
 {% endblock %}
