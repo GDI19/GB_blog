@@ -31,6 +31,11 @@ app.register_blueprint(auth_app, url_prefix='/auth')
 app.register_blueprint(authors_app, url_prefix='/authors')
 
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 @app.cli.command("create-admin")
 def create_admin():
     """
@@ -48,6 +53,17 @@ def create_admin():
     print("Created admin:", admin)
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.cli.command("create-tags")
+def create_tags():
+    """
+    Run in your terminal:
+    ➜ flask create-tags
+    """
+    from blog.models.tag import Tag
+    
+    tags = ["flask", "django", "python", "sqlalchemy", "news",]
+    for tag_name in tags: 
+        tag = Tag(name=tag_name)
+        db.session.add(tag)
+    db.session.commit()
+    print ('tags created')

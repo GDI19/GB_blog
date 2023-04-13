@@ -18,6 +18,13 @@
             <div><small class="text-muted">Created at: {{ article.dt_created.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
             <div><small class="text-muted">Updated at: {{ article.dt_updated.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
         </div>
+        {% if article.tags %}
+        <div class="col-6">
+            {% for tag in article.tags %}
+                <span class="badge bg-primary">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 
 {% endblock %}

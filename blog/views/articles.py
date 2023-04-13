@@ -2,11 +2,13 @@ from flask import Blueprint, redirect, render_template, request, url_for, curren
 from werkzeug.exceptions import NotFound
 from flask_login import login_required, current_user
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
 
 from blog.models.author import Author
 from blog.models.article import Article
 from blog.forms.articles import CreateArticleForm
 from blog.models.database import db
+from blog.models.tag import Tag
 
 articles_app = Blueprint('articles_app', __name__)
 
@@ -35,7 +37,9 @@ def articles_list():
 @articles_app.route('/<int:article_id>/', endpoint='details')
 @login_required
 def article_details(article_id):
-    choosen_article=Article.query.filter_by(id=article_id).one_or_none()
+    choosen_article=Article.query.filter_by(id=article_id).options(
+        joinedload(Article.tags)
+        ).one_or_none()
     if choosen_article is None:
         raise NotFound(f'The article #{article_id} does not exist!')
     return render_template('articles/details.html', article=choosen_article)
@@ -46,6 +50,7 @@ def article_details(article_id):
 def article_create():
     error = None
     form = CreateArticleForm(request.form)
+    form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.order_by('name')]
 
     if request.method == "POST" and form.validate_on_submit:
         _article = Article(title = form.title.data, text = form.text.data)
@@ -58,6 +63,11 @@ def article_create():
             db.session.add(author)
             db.session.flush()
             _article.author = author
+
+        if form.tags.data:
+            selected_tags = Tag.query.filter(Tag.id.in_(form.tags.data))
+            for tag in selected_tags:
+                _article.tags.append(tag)
 
         try:
             db.session.commit()
