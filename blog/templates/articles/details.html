@@ -21,7 +21,9 @@
         {% if article.tags %}
         <div class="col-6">
             {% for tag in article.tags %}
-                <span class="badge bg-primary">{{ tag.name }}</span>
+                <a href="{{ url_for('articles_app.tag_articles', tag_id=tag.id) }}">
+                    <span class="badge bg-primary">{{ tag.name }}</span>
+                </a>
             {% endfor %}
         </div>
         {% endif %}

@@ -34,6 +34,17 @@ def articles_list():
     return render_template('articles/list.html', articles=articles)
 
 
+@articles_app.route('/tag/<int:tag_id>/', endpoint='tag_articles')
+def articles_to_tag(tag_id):
+    error = None
+    tag_object = Tag.query.filter_by(id=tag_id).options(
+        joinedload(Tag.articles)
+        ).one_or_none()
+    if tag_object is None:
+        error = f'There is no article to such tag with id {tag_id}'
+    return render_template('articles/list_to_tag.html', tag_object=tag_object, error=error)
+
+
 @articles_app.route('/<int:article_id>/', endpoint='details')
 @login_required
 def article_details(article_id):
