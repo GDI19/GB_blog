@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from flask import request
+
+from .models.admin import admin
 from .views.users import users_app
 from .views.articles import articles_app
 from .views.auth import auth_app, login_manager
@@ -23,6 +25,7 @@ app.config.from_object(f"blog.configs.{cfg_name}")
 db.init_app(app)
 login_manager.init_app(app)
 flask_bcrypt.init_app(app)
+admin.init_app(app)
 
 
 app.register_blueprint(users_app, url_prefix="/users")

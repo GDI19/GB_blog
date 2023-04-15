@@ -6,6 +6,7 @@ load_dotenv()
 
 ADMIN_PASSWORD = os.environ['ADMIN_PASSWORD']
 CONFIG_NAME = os.environ["CONFIG_NAME"]
+FLASK_ADMIN_SWATCH = 'cosmo'
 
 
 class BaseConfig(object):
