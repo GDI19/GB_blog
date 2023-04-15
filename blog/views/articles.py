@@ -41,7 +41,7 @@ def articles_to_tag(tag_id):
         joinedload(Tag.articles)
         ).one_or_none()
     if tag_object is None:
-        error = f'There is no article to such tag with id {tag_id}'
+        error = f'There is no such tag with id {tag_id}'
     return render_template('articles/list_to_tag.html', tag_object=tag_object, error=error)
 
 
