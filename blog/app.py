@@ -10,7 +10,7 @@ from .models.database import db
 from flask_migrate import Migrate
 from blog.security import flask_bcrypt
 from blog.configs import ADMIN_PASSWORD, CONFIG_NAME
-
+from blog.api import init_api
 
 app = Flask(__name__)
 
@@ -26,6 +26,7 @@ db.init_app(app)
 login_manager.init_app(app)
 flask_bcrypt.init_app(app)
 admin.init_app(app)
+api = init_api(app)
 
 
 app.register_blueprint(users_app, url_prefix="/users")
