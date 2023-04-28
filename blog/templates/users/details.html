@@ -8,6 +8,7 @@
     <a href="{{ url_for('users_app.list') }}">Back to Users List</a>
     <br>
     <h1>{{ user.username }}</h1>
+    <p>{{ user.first_name }} {{ user.last_name }}</p>
     {% if user.is_staff %}
         <span class="badge bg-secondary">staff</span>
     {% endif %}
