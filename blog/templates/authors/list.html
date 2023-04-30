@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    AUthors List
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h1>Authors:</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% for author in authors %}
+                <ul>
+                    <li>
+                        <a href="{{ url_for('authors_app.details', author_id=author.id) }}">
+                            {{ author.user.first_name }} {{ author.user.last_name }} ({{ author.id }})
+                        </a>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

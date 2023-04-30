@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Article # {{ article.id + 1 }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h1>{{ article.title }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">{{ article.text }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div><small class="text-muted">Author: {{ article.author.user.first_name }} {{ article.author.user.last_name }}</small></div>
+            <div><small class="text-muted">Created at: {{ article.dt_created.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
+            <div><small class="text-muted">Updated at: {{ article.dt_updated.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
+        </div>
+        {% if article.tags %}
+        <div class="col-6">
+            {% for tag in article.tags %}
+                <a href="{{ url_for('articles_app.tag_articles', tag_id=tag.id) }}">
+                    <span class="badge bg-primary">{{ tag.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

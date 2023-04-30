@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Users List
+{% endblock %}
+
+{% block content %}
+
+    <h1>Users</h1>
+    <div>
+        <ul class="list-group">
+            {% if users %}
+                {% for user in users %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('users_app.details', user_id=user.id ) }}">
+                        {{ user.username }} {{ user.first_name }} {{ user.last_name }}
+                    </a>
+                    {% if user.is_staff %}
+                        <span class="badge bg-secondary">staff</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            {% else %}
+                <h3>There are no users</h3>
+            {% endif %}
+        </ul>
+    </div>
+
+{% endblock %}
