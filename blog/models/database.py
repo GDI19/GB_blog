@@ -15,5 +15,5 @@ db=SQLAlchemy(metadata=metadata)
 
 
 __all__ = [
-    'bd',
+    'db',
 ]
